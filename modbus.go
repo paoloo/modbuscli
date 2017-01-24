@@ -2,7 +2,6 @@ package modbuscli
 
 import (
   "net"
-  "log"
 )
 
 const (
