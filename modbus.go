@@ -30,6 +30,7 @@ type ModBus struct {
 }
 
 func (m *ModBus) envelope() ([]byte) {
+  if m.Addr == byte(0) { m.Addr = 0x01 }
   head := []byte{0x00, 0x00, 0x00, 0x00, 0x00, byte(len(m.Data) + 2), m.Addr, m.Code}
   body := []byte{}
   body = append(body, head...)
@@ -38,7 +39,6 @@ func (m *ModBus) envelope() ([]byte) {
 }
 
 func (m *ModBus) WriteRegister(regAddr int, regVal int) ([]int, error){
-  m.Addr = 0x01
   m.Code = WRITEREGISTER
   m.Data = []byte{}
   m.Data = append(m.Data, intTo2Byte(regAddr)...)
@@ -48,7 +48,6 @@ func (m *ModBus) WriteRegister(regAddr int, regVal int) ([]int, error){
 }
 
 func (m *ModBus) ReadHoldingRegister(regAddr int, regSize int) ([]int, error) {
-  m.Addr = 0x01
   m.Code = READHOLDINGREGISTER
   m.Data = []byte{}
   m.Data = append(m.Data, intTo2Byte(regAddr)...)
@@ -62,7 +61,6 @@ func (m *ModBus) ReadHoldingRegister(regAddr int, regSize int) ([]int, error) {
 }
 
 func (m *ModBus) WriteRegisters(regAddr int, regVal []int) ([]int, error) {
-  m.Addr = 0x01
   m.Code = WRITEREGISTERS
   m.Data = []byte{}
   m.Data = append(m.Data, intTo2Byte(regAddr)...)
